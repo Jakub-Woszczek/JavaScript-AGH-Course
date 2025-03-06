@@ -1,0 +1,68 @@
+.azure {
+    background-color: #d8ffff; /* Błękitne tło */
+}
+
+/* Styl dla boxów (aside, main, footer, nav) */
+header, aside, main, footer, nav {
+    border: 2px solid black; /* Czarna ramka */
+    padding: 5px; /* Wewnętrzny margines */
+    margin: 5px; /* Zewnętrzny margines */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); /* Lekki cień */
+}
+
+/* Styl dla tytułów w boxach */
+header h1, aside h1, main h1, nav h1 {
+    font-size: 30px; /* Powiększenie tekstu */
+    font-weight: bold; /* Pogrubienie */
+    margin-top: 5px; /* Mniejszy odstęp od góry */
+    margin-bottom: 0px; /* Odstęp od treści */
+}
+header h1 {
+    font-size: 36px; /* Powiększenie tekstu */
+}
+
+/* Mniejsze odstępy w headerze i footerze */
+header, footer {
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+main {
+    font-family: 'Georgia', serif; /* Możesz zmienić na inną */
+}
+
+main blockquote {
+    white-space: pre-line; /* Zachowuje entery z HTML */
+    line-height: 1.2; /* Zwiększa odstępy między wierszami */
+}
+
+/* Układ strony na 2 kolumny */
+.container {
+    display: flex;
+    gap: 30px; /* Odstęp między kolumnami */
+}
+
+/* Lewa kolumna: NAV + MAIN */
+.left-column {
+    display: flex;
+    flex-direction: column; /* Ustawienie nav nad main */
+    width: 45%; /* 30% szerokości */
+}
+
+/* Główna treść (aside) - szersza kolumna */
+aside {
+    width: 55%; /* 70% szerokości */
+}
+
+/* NAV i ASIDE mają szerokość zależną od treści */
+nav {
+    width: max-content;
+}
+aside {
+    height: max-content;
+}
+
+main blockquote {
+    margin-left: 0; /* Usunięcie przesunięcia */
+    white-space: pre-line; /* Zachowuje entery */
+}

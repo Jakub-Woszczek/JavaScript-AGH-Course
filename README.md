@@ -1,1 +1,1 @@
-# JavaScript-AGH-Course
+Introduction course into JS

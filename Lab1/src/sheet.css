@@ -2,6 +2,49 @@
     background-color: #d8ffff;
 }
 
+body {
+    font-size: calc(0.5vw + 15px);
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 768px) {
+
+    .container {
+        display: flex;
+        gap: 30px;
+    }
+    .left-column {
+        display: flex;
+        flex-direction: column;
+        width: 45%;
+    }
+
+    aside {
+        width: 55%;
+        height: max-content;
+    }
+    nav {
+        width: max-content;
+    }
+
+
+    footer {
+        animation: footerPuls 2s ease-in-out infinite alternate;
+        text-align: center;
+        width: auto;
+    }
+
+    @keyframes footerPuls {
+        from {
+            width: 30%;
+        }
+        to {
+            width: 90%;
+        }
+    }
+}
+
 header, aside, main, footer, nav {
     border: 2px solid black;
     padding: 5px;
@@ -10,54 +53,16 @@ header, aside, main, footer, nav {
 }
 
 header h1, aside h1, aside h2, main h1, nav h1 {
-    font-size: 30px;
     font-weight: bold;
     margin-top: 5px;
     margin-bottom: 0;
 }
-header h1 {
-    font-size: 36px;
-}
-
-header, footer {
-    padding-top: 2px;
-    padding-bottom: 2px;
-}
-
-main {
-    font-family: 'Georgia', serif;
-}
 
 main blockquote {
+    font-family: 'Ink Free', serif;
     white-space: pre-line;
     line-height: 1.2;
-}
-
-.container {
-    display: flex;
-    gap: 30px;
-}
-
-.left-column {
-    display: flex;
-    flex-direction: column;
-    width: 45%;
-}
-
-aside {
-    width: 55%;
-}
-
-nav {
-    width: max-content;
-}
-aside {
-    height: max-content;
-}
-
-main blockquote {
     margin-left: 0;
-    white-space: pre-line;
 }
 
 :root {
@@ -78,19 +83,4 @@ h1 {
     animation-name: colorChange;
     animation-duration: 1ms;
     animation-timeline: scroll(y root);
-}
-
-footer {
-    animation: footerPuls 2s ease-in-out infinite alternate;
-    text-align: center;
-    width: auto;
-}
-
-@keyframes footerPuls {
-    from {
-        width: 30%;
-    }
-    to {
-        width: 90%;
-    }
 }

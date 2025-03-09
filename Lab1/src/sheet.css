@@ -79,3 +79,18 @@ h1 {
     animation-duration: 1ms;
     animation-timeline: scroll(y root);
 }
+
+footer {
+    animation: footerPuls 2s ease-in-out infinite alternate;
+    text-align: center;
+    width: auto;
+}
+
+@keyframes footerPuls {
+    from {
+        width: 30%;
+    }
+    to {
+        width: 90%;
+    }
+}

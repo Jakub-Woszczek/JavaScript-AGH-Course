@@ -1,10 +1,9 @@
-/* Stylizacja globalna */
+/*global settings*/
 body {
     background-color: #f8f9fa;
     font-family: 'Andalé Mono', monospace;
     display: flex;
     flex-direction: column;
-    /*width: 90%;*/
     align-items: center;
 }
 .custom-navbar, .middle, .footer {
@@ -12,47 +11,11 @@ body {
     margin: 0 auto;
 }
 
-/* Nawigacja */
 .custom-navbar, .footer {
     background-color: #e6e6fa !important;
-    /*width: 90%;*/
-    /*margin: 0 auto;*/
 }
 
-/*!* Header *!*/
-/*.header {*/
-/*    display: flex;*/
-/*    justify-content: space-between;*/
-/*    align-items: center;*/
-/*    background-color: #e6e6fa;*/
-/*    !*width: 90%;*!*/
-/*}*/
-
-/* Menu */
-/*.menu {*/
-/*    display: flex;*/
-/*    gap: 20px;*/
-/*}*/
-
-/*.menu a {*/
-/*    text-decoration: none;*/
-/*    color: black;*/
-/*}*/
-
-/*.menu a:first-child {*/
-/*    font-weight: bold;*/
-/*}*/
-
-/*.menu-toggle {*/
-/*    display: none;*/
-/*    cursor: pointer;*/
-/*}*/
-
-/* Sekcja środkowa */
-.middle {
-    /*width: 90%;*/
-}
-
+/*middle*/
 .large-box {
     background-color: #ffffff;
     padding-left: 20px;
@@ -61,86 +24,39 @@ body {
     margin: 0 auto;
 }
 
-/* Karty */
+/*text settings*/
 .card-body {
     padding: 0 !important;
 }
-.card-body p, .wydzial, .student_type, .karta {
+.card-body p, .wydzial, .student_type, .footer-column {
     text-align: left;
     display: block;
 }
 .card-body p, .student_type {
     border-bottom: 1px solid #ccc;
 }
-.card-body p, .karta {
+.card-body p, .footer-column {
     padding: 15px;
     font-size: 20px;
     font-style: italic;
 
 }
 .card-body p {
-    /*border-bottom: 1px solid #ccc;*/
     margin-bottom: 10px;
-    /*display: block;*/
-    /*width: 100%;*/
-    /*text-align: left;*/
-    /*padding: 10px;*/
-    /*font-size: 20px;*/
-    /*font-style: italic;*/
 }
 
-/* Teksty */
-.wydzial {
+.faculty {
     font-weight: bold;
     font-size: 32px;
-    /*text-align: left;*/
-    /*display: block;*/
 }
 
 .student_type {
     padding: 0 !important;
-    /*display: block;*/
-    /*border-bottom: 1px solid #ccc;*/
-    /*text-align: left;*/
-}
-
-.karta {
-    /*text-align: left !important;*/
-    /*display: block;*/
-    /*font-size: 20px;*/
-    /*font-style: italic;*/
-    /*padding: 15px;*/
-}
-
-/* Kolumny i wiersze */
-.columns {
-    display: flex;
-    gap: 20px;
-}
-
-.column {
-    /*flex: 1;*/
-    /*border: 1px solid #ddd;*/
-    /*padding: 15px;*/
-    /*text-align: left !important;*/
-    background-color: white;
-}
-
-.column img {
-    /*max-width: 100%;*/
-    /*height: auto;*/
 }
 
 .row .col {
     margin-top: 0 !important;
 }
-
-/* Stopka */
-/*.footer {*/
-/*    text-align: left;*/
-/*    background-color: #e6e6fa;*/
-/*    width: 90%;*/
-/*}*/
 
 /* Media queries */
 @media (max-width: 992px) {

@@ -1,0 +1,86 @@
+.azure {
+    background-color: #d8ffff;
+}
+
+body {
+    font-size: calc(0.5vw + 15px);
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 768px) {
+
+    .container {
+        display: flex;
+        gap: 30px;
+    }
+    .left-column {
+        display: flex;
+        flex-direction: column;
+        width: 45%;
+    }
+
+    aside {
+        width: 55%;
+        height: max-content;
+    }
+    nav {
+        width: max-content;
+    }
+
+
+    footer {
+        animation: footerPuls 2s ease-in-out infinite alternate;
+        text-align: center;
+        width: auto;
+    }
+
+    @keyframes footerPuls {
+        from {
+            width: 30%;
+        }
+        to {
+            width: 90%;
+        }
+    }
+}
+
+header, aside, main, footer, nav {
+    border: 2px solid black;
+    padding: 5px;
+    margin: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+header h1, aside h1, aside h2, main h1, nav h1 {
+    font-weight: bold;
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+
+main blockquote {
+    font-family: 'Ink Free', serif;
+    white-space: pre-line;
+    line-height: 1.2;
+    margin-left: 0;
+}
+
+:root {
+    --text-color-initial: #000000;
+    --text-color-final: #ff0000;
+}
+
+@keyframes colorChange {
+    from {
+        color: var(--text-color-initial);
+    }
+    to {
+        color: var(--text-color-final);
+    }
+}
+
+h1 {
+    animation-name: colorChange;
+    animation-duration: 1ms;
+    animation-timeline: scroll(y root);
+}

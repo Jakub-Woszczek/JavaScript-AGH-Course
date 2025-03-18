@@ -1,0 +1,82 @@
+/*global settings*/
+body {
+    background-color: #f8f9fa;
+    font-family: 'Andalé Mono', monospace;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.custom-navbar, .middle, .footer {
+    width: 90% !important;
+    margin: 0 auto;
+}
+
+.custom-navbar, .footer {
+    background-color: #e6e6fa !important;
+}
+
+/*middle*/
+.large-box {
+    background-color: #ffffff;
+    padding-left: 20px;
+    padding-right: 20px;
+    border: 1px solid #ddd;
+    margin: 0 auto;
+}
+
+/*text settings*/
+.card-body {
+    padding: 0 !important;
+}
+.card-body p, .wydzial, .student_type, .footer-column {
+    text-align: left;
+    display: block;
+}
+.card-body p, .student_type {
+    border-bottom: 1px solid #ccc;
+}
+.card-body p, .footer-column {
+    padding: 15px;
+    font-size: 20px;
+    font-style: italic;
+
+}
+.card-body p {
+    margin-bottom: 10px;
+}
+
+.faculty {
+    font-weight: bold;
+    font-size: 32px;
+}
+
+.student_type {
+    padding: 0 !important;
+}
+
+.row .col {
+    margin-top: 0 !important;
+}
+
+/* Media queries */
+@media (max-width: 992px) {
+    .menu {
+        display: none;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .menu.d-none {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .columns {
+        flex-direction: column;
+    }
+}

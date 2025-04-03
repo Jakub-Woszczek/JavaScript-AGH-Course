@@ -23,7 +23,8 @@
   mocha.setup('bdd');
   mocha.checkLeaks();
   // Początek bloku wywołań funkcji testujących
-
+  import {test_sum} from './zadanie2.test.js';
+  test_sum();
   // Koniec bloku wywołań funkcji testujących
   mocha.run();
 </script>

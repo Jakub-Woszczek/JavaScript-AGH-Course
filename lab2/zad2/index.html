@@ -14,7 +14,7 @@
 
 <body>
 <div id="mocha"></div>
-<script src="zadanie2.js"></script>
+<script type="module" src="zadanie2.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mocha/mocha.js"></script>
 <script type="module">
   import { should } from 'https://cdn.jsdelivr.net/npm/chai/chai.js';
@@ -23,8 +23,11 @@
   mocha.setup('bdd');
   mocha.checkLeaks();
   // Początek bloku wywołań funkcji testujących
-  import {test_sum} from './zadanie2.test.js';
-  test_sum();
+  // import {test_sum} from './zadanie2.test.js';
+  // test_sum();
+
+  import {test_string_operations} from './zadanie2.test.js';
+  test_string_operations();
   // Koniec bloku wywołań funkcji testujących
   mocha.run();
 </script>

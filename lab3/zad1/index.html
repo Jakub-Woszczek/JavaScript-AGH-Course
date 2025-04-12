@@ -64,7 +64,16 @@
     }
 
     function calculatePrimesInBackground(iterations) {
-        window.alert('Implement missing functionality')
+        const worker = new Worker('worker.js');
+
+        worker.postMessage(iterations);
+        worker.onmessage = function(e) {
+            document.forms[0].result_worker.value = e.data;
+        };
+
+        worker.onerror = function(e) {
+            console.error('Błąd w workerze:', e.message);
+        };
     }
 
     function startAnimation() {

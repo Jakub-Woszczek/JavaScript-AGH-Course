@@ -7,9 +7,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Animation</title>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 
 <body>
+<div id="root"></div>
+<hr>
 <form onsubmit="event.preventDefault();">
     <h2>requestAnimationFrame()</h2>
     <label for="counter">Counter→</label>
@@ -92,6 +95,52 @@
         document.forms[0].stop.disabled = true;
         window.cancelAnimationFrame(animation)
     }
+</script>
+
+<!-- Komponent Counter -->
+<script type="text/babel" data-type="module">
+    import React, { useState, useRef, useEffect } from "https://esm.sh/react?dev";
+    import ReactDOMClient from "https://esm.sh/react-dom/client?dev";
+
+    function Counter({ initial, delay }) {
+        const [count, setCount] = useState(Number(initial));
+        const intervalRef = useRef(null);
+
+        const start = () => {
+            if (intervalRef.current !== null) return;
+            intervalRef.current = setInterval(() => {
+                setCount(prev => prev + 1);
+            }, Number(delay));
+        };
+
+        const stop = () => {
+            clearInterval(intervalRef.current);
+            intervalRef.current = null;
+        };
+
+        useEffect(() => {
+            return () => clearInterval(intervalRef.current); // czyść przy odmontowaniu
+        }, []);
+
+        return (
+            <div style={{ backgroundColor: "#d7e4d6", padding: "1rem", margin: "1rem", borderRadius: "8px" }}>
+                <span>Counter→ </span>
+                <span style={{ color: "red", fontWeight: "bold" }}>{count}</span>
+                <br />
+                <button onClick={start}>Start</button>
+                <button onClick={stop}>Stop</button>
+            </div>
+        );
+    }
+
+    const container = document.getElementById("root");
+    const root = ReactDOMClient.createRoot(container);
+    root.render(
+        <>
+            <Counter initial="10" delay="100" />
+            <Counter initial="15" delay="50" />
+        </>
+    );
 </script>
 </body>
 

@@ -1,204 +1,171 @@
-// Inicjalizacja danych
-let students = [
-    { name: "Jan Kowalski", subjects: [
-            { name: "WDI", grades: [] },
-            { name: "esum", grades: [] },
-            { name: "JS", grades: [] }
-        ]
+const students = [
+    {
+        name: "Tiger Bonzo",
+        photo: "images/Tiger_bonzo.png",
+        subjects: []
     },
-    { name: "Anna Nowak", subjects: [
-            { name: "WDI", grades: [] },
-            { name: "esum", grades: [] },
-            { name: "JS", grades: [] }
-        ]
+    {
+        name: "Harry Squatter",
+        photo: "images/Harry_squatter.png",
+        subjects: []
     },
-    { name: "Jerzy Zmuda", subjects: [
-            { name: "WDI", grades: [] },
-            { name: "esum", grades: [] },
-            { name: "JS", grades: [] }
-        ]
-    },
-    { name: "Katarzyna Wiśniewska", subjects: [
-            { name: "WDI", grades: [] },
-            { name: "esum", grades: [] },
-            { name: "JS", grades: [] }
-        ]
+    {
+        name: "Major",
+        photo: "images/Major.png",
+        subjects: []
     }
 ];
 
-// _______________________ Dodawanie ocen _______________________________
-function displayStudentListAdd() {
-    const resultsDiv = document.getElementById('results');
-    resultsDiv.innerHTML = students.map(student => {
-        return `<button class="btn btn-link student-btn" onclick="showStudentDetailsAdd('${student.name}')">${student.name}</button>`;
-    }).join('');
-}
+// Test field parser
+function parseUserInput() {
+    const input = document.getElementById("userInput").value.trim();
+    const parts = input.split(",");
 
-function showStudentDetailsAdd(studentName) {
-    const resultsDiv = document.getElementById('results');
-    const student = students.find(s => s.name === studentName);
-
-    if (student) {
-        let subjectList = student.subjects.map(subject => {
-            return `<button class="btn btn-link subject-btn" onclick="addGradeToStudent('${studentName}', '${subject.name}')">${subject.name}</button>`;
-        }).join('');
-
-        resultsDiv.innerHTML = `
-      <h4>${studentName}</h4>
-      <h5>Przedmioty:</h5>
-      ${subjectList}
-    `;
+    if (parts.length !== 3) {
+        alert("Poprawny format: Imię Nazwisko,przedmiot,ocena");
+        return null;
     }
-}
 
-function addGradeToStudent(studentName, subjectName) {
-    const resultsDiv = document.getElementById('results');
+    const [fullName, subjectName, gradeStr] = parts.map(p => p.trim());
+    const grade = parseFloat(gradeStr);
 
-    const student = students.find(s => s.name === studentName);
-    const subject = student.subjects.find(sub => sub.name === subjectName);
-
-    if (student && subject) {
-        resultsDiv.innerHTML = `
-            <h4>Dodaj ocenę do przedmiotu: ${subjectName}</h4>
-            <input type="number" id="gradeInput" class="form-control" placeholder="Wpisz ocenę (np. 4.5)" step="0.1" min="2" max="5">
-            <button class="btn btn-success" onclick="saveGrade('${studentName}', '${subjectName}')">Dodaj</button>
-        `;
+    if (isNaN(grade)) {
+        alert("Ocena musi być liczbą.");
+        return null;
     }
+    if (grade < 1 || grade > 5) {
+        alert("Niepoprawny zakres oceny");
+        return null;
+    }
+
+    const studentId = students.findIndex(s => s.name.toLowerCase() === fullName.toLowerCase());
+
+    if (studentId === -1 || !students[studentId]) {
+        alert("Nie znaleziono studenta o imieniu i nazwisku: " + fullName);
+        return null;
+    }
+
+    return {
+        studentId,
+        fullName,
+        subjectName,
+        grade
+    };
 }
 
-function saveGrade(studentName, subjectName) {
-    const grade = parseFloat(document.getElementById('gradeInput').value);
+// Add button handling
+document.getElementById("addButton").addEventListener("click", () => {
+    const { studentId, fullName, subjectName, grade } = parseUserInput() || {};
+    addGradeToStudent(studentId, subjectName, grade);
+});
 
-    if (!isNaN(grade) && grade >= 2 && grade <= 5) {
-        const student = students.find(s => s.name === studentName);
-        const subject = student.subjects.find(sub => sub.name === subjectName);
 
-        if (student && subject) {
-            if (!subject.grades) subject.grades = [];
-            subject.grades.push(grade);
-            console.log(subject.grades)
-            localStorage.setItem('students', JSON.stringify(students));
+// ____________ ADD BUTTON logic ____________
+function addGradeToStudent(studentId, subjectName, grade) {
 
-            alert(`Ocena ${grade} została dodana do przedmiotu ${subjectName} studenta ${studentName}`);
+    const student = students[studentId];
+    let subject = student.subjects.find(s => s.name === subjectName);
 
-            showStudentDetailsAdd(studentName);
+    const tabButton = document.querySelector(`#tab-${studentId}`);
+    const tab = new bootstrap.Tab(tabButton);
+    tab.show();
+
+    if (!subject) {
+        subject = { name: subjectName, grades: [] };
+        student.subjects.push(subject);
+    }
+
+    subject.grades.push(grade);
+
+    const subjectList = document.getElementById(`subjects-${studentId}`);
+    subjectList.innerHTML = student.subjects.map(sub =>
+        `<li><strong>${sub.name}</strong>: ${sub.grades.join(', ')}</li>`
+    ).join('');
+}
+
+// _____________________ CHANGE BUTTON logic _____________________
+document.getElementById("updateButton").addEventListener("click", () => {
+    const { studentId, fullName, subjectName, grade } = parseUserInput() || {};
+
+
+    const studentID = students[studentId];
+    const subject = studentID.subjects.find(sub => sub.name.toLowerCase() === subjectName.toLowerCase());
+
+    if (!subject || subject.grades.length === 0) {
+        alert("Student nie ma ocen z tego przedmiotu.");
+        return;
+    }
+
+    const tabButton = document.querySelector(`#tab-${studentId}`);
+    const tab = new bootstrap.Tab(tabButton);
+    tab.show();
+
+    const contentId = `content-${studentId}`;
+    const tabPane = document.getElementById(contentId);
+    const subjectList = tabPane.querySelector("ul");
+
+    subjectList.innerHTML = studentID.subjects.map(sub => {
+        if (sub.name.toLowerCase() === subjectName.toLowerCase()) {
+            return `<li><strong>${sub.name}</strong>: ${
+                sub.grades.map((g, i) =>
+                    `<button class="btn btn-sm btn-outline-primary me-1 mb-1 grade-btn" data-sub="${subject.name}" data-index="${i}" data-student="${studentId}">${g}</button>`
+                ).join("")
+            }</li>`;
+        } else {
+            return `<li><strong>${sub.name}</strong>: ${sub.grades.length > 0 ? sub.grades.join(", ") : "Brak ocen"}</li>`;
         }
-    } else {
-        alert("Proszę wpisać poprawną ocenę (od 2.0 do 5.0)");
+    }).join("");
+
+    document.querySelectorAll(".grade-btn").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            const i = parseInt(e.target.dataset.index);
+            const sid = parseInt(e.target.dataset.student);
+            const sub = e.target.dataset.sub;
+
+            const subj = students[sid].subjects.find(s => s.name === sub);
+            subj.grades[i] = grade;
+
+            subj.grades[i] = grade;
+
+            restoreSubjectGradesView(sid, sub);
+
+        });
+    });
+});
+
+function restoreSubjectGradesView(studentId, subjectName) {
+    const student = students[studentId];
+    const subject = student.subjects.find(s => s.name.toLowerCase() === subjectName.toLowerCase());
+
+    const contentId = `content-${studentId}`;
+    const tabPane = document.getElementById(contentId);
+    const subjectList = tabPane.querySelector("ul");
+
+    subjectList.innerHTML = student.subjects.map(sub => {
+        const gradesText = sub.grades.length > 0 ? sub.grades.join(", ") : "Brak ocen";
+        return `<li><strong>${sub.name}</strong>: ${gradesText}</li>`;
+    }).join("");
+}
+
+
+
+document.getElementById("displayButton").addEventListener("click", () => {
+    const allTabPanes = document.querySelectorAll(".tab-pane");
+
+    if (allTabPanes.length === 0) {
+        renderStudentTabs();
+        return;
     }
-}
 
-// _______________________ Zmiana ocen _______________________________
+    allTabPanes.forEach(pane => {
+        const isExpanded = pane.getAttribute("data-expanded") === "true";
 
-function displayStudentListChange() {
-    const resultsDiv = document.getElementById('results');
-    resultsDiv.innerHTML = students.map(student => {
-        return `<button class="btn btn-link" onclick="showStudentSubjectsChange('${student.name}')">${student.name}</button>`;
-    }).join('');
-}
-
-function showStudentSubjectsChange(studentName) {
-    const resultsDiv = document.getElementById('results');
-    const student = students.find(s => s.name === studentName);
-
-    if (student) {
-        const subjectList = student.subjects.map(subject => {
-            return `<button class="btn btn-link" onclick="showStudentGradesChange('${studentName}', '${subject.name}')">${subject.name}</button>`;
-        }).join('');
-
-        resultsDiv.innerHTML = `
-            <h4>${studentName}</h4>
-            <h5>Przedmioty:</h5>
-            ${subjectList}
-        `;
-    }
-}
-
-function showStudentGradesChange(studentName, subjectName) {
-    const resultsDiv = document.getElementById('results');
-    const student = students.find(s => s.name === studentName);
-    const subject = student?.subjects.find(sub => sub.name === subjectName);
-
-    if (student && subject) {
-        const gradeList = subject.grades.map((grade, index) => {
-            return `<button class="btn btn-outline-secondary m-1" onclick="changeGrade('${studentName}', '${subjectName}', ${index})">${grade}</button>`;
-        }).join('');
-
-        resultsDiv.innerHTML = `
-            <h4>${studentName} - ${subjectName}</h4>
-            <h5>Oceny:</h5>
-            ${gradeList}
-        `;
-    }
-}
-
-function changeGrade(studentName, subjectName, gradeIndex) {
-    const resultsDiv = document.getElementById('results');
-
-    resultsDiv.innerHTML = `
-        <h4>Zmień ocenę</h4>
-        <input type="number" id="newGradeInput" class="form-control mb-2" placeholder="Nowa ocena" step="0.1" min="2" max="5">
-        <button class="btn btn-primary" onclick="saveChangedGrade('${studentName}', '${subjectName}', ${gradeIndex})">Zmień</button>
-    `;
-}
-
-function saveChangedGrade(studentName, subjectName, gradeIndex) {
-    const newGrade = parseFloat(document.getElementById('newGradeInput').value);
-
-    if (!isNaN(newGrade) && newGrade >= 2 && newGrade <= 5) {
-        const student = students.find(s => s.name === studentName);
-        const subject = student?.subjects.find(sub => sub.name === subjectName);
-
-        if (student && subject && subject.grades && subject.grades[gradeIndex] !== undefined) {
-            subject.grades[gradeIndex] = newGrade;
-
-            localStorage.setItem('students', JSON.stringify(students));
-            alert(`Ocena została zmieniona na ${newGrade}`);
-            showStudentGradesChange(studentName, subjectName);
+        if (isExpanded) {
+            pane.classList.remove("show", "active");
+            pane.setAttribute("data-expanded", "false");
+        } else {
+            pane.classList.add("show", "active");
+            pane.setAttribute("data-expanded", "true");
         }
-    } else {
-        alert("Wprowadź poprawną ocenę (2.0 - 5.0)");
-    }
-}
-
-// _______________________ Wyswietlanie ocen _______________________________
-
-function displayGrades() {
-    const resultsDiv = document.getElementById('results');
-    resultsDiv.innerHTML = students.map(student => {
-        return `<button class="btn btn-link student-btn" onclick="showStudentGrades('${student.name}')">${student.name}</button>`;
-    }).join('');
-}
-
-function showStudentGrades(studentName) {
-    const resultsDiv = document.getElementById('results');
-    const student = students.find(s => s.name === studentName);
-
-    if (student) {
-        let subjectList = student.subjects.map(subject => {
-            return `<p>${subject.name}: ${subject.grades}</p>`;
-        }).join('');
-
-        resultsDiv.innerHTML = `
-      <h4>${studentName}</h4>
-      <h5>Oceny:</h5>
-      ${subjectList}
-    `;
-    }
-}
-
-
-
-document.getElementById('addButton').addEventListener('click', function() {
-    displayStudentListAdd();
+    });
 });
-
-document.getElementById('updateButton').addEventListener('click', function() {
-    displayStudentListChange();
-});
-
-document.getElementById('displayButton').addEventListener('click', function() {
-    displayGrades();
-});
-
-window.onload = function() {}

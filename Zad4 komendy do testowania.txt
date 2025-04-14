@@ -1,0 +1,18 @@
+-> Test złego imienia
+Karol,wdi,5
+
+-> Test złej oceny
+Major,cos,-1
+Major,cos,8
+
+-> Test poprawnego dodawania
+Harry Squatter,wdi,3
+Harry Squatter,wdi,4
+Harry Squatter,JS,2
+Harry Squatter,JS,3
+
+-> Test zmiany ocen przedmiotu którego nie ma
+Major,nieMaTakiegoPrzedmiotu,3
+
+-> Test zmiany ocen (przy założeniu że są już dodane)
+Harry Squatter,JS,5

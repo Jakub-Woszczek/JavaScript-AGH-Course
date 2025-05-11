@@ -39,35 +39,24 @@ function asyncMode() {
 }
 
 function commandMode() {
-    console.log("Wprowadź komendy — naciśnięcie Ctrl+D kończy wprowadzanie danych");
+    console.log("Wpisuj komendy — Ctrl+C kończy program");
 
     stdin.setEncoding('utf-8');
-    let buffer = '';
 
     stdin.on('data', chunk => {
-        buffer += chunk;
-    });
-
-    stdin.on('end', () => {
-        const commands = buffer.split('\n').filter(cmd => cmd.trim() !== '');
-        runCommands(commands);
+        const input = chunk.trim();
+        if (input !== '') {
+            exec(input, (err, stdout, stderr) => {
+                if (err) {
+                    console.error(`Błąd komendy "${input}":`, stderr.trim());
+                } else {
+                    console.log(stdout.trim());
+                }
+            });
+        }
     });
 
     stdin.resume();
-}
-
-function runCommands(commands) {
-    if (commands.length === 0) return;
-
-    const cmd = commands.shift();
-    exec(cmd, (err, stdout, stderr) => {
-        if (err) {
-            console.error(`Błąd komendy "${cmd}":`, stderr.trim());
-        } else {
-            console.log(stdout.trim());
-        }
-        runCommands(commands);
-    });
 }
 
 if (argv.includes('--sync')) {

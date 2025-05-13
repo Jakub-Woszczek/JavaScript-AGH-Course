@@ -38,6 +38,10 @@ function requestListener(request, response) {
     /* *************** */
 
     const route = [request.method, url.pathname].join(" ");
+    console.log("METHOD:", request.method);
+    console.log("PATHNAME:", url.pathname);
+    console.log("ROUTE:", route);
+
     switch (route) {
         /* 
               -------------------------------------------------------
@@ -224,12 +228,27 @@ function requestListener(request, response) {
             response.write(xsl);
             response.end();
             break;
+        
+        /* Fixing failed test **/
+        case "POST /":
+            let body = "";
+            request.on("data", chunk => (body += chunk));
+            request.on("end", () => {
+                const params = new URLSearchParams(body);
+                const name = params.get("name");
+                response.writeHead(200, { "Content-Type": "text/plain; charset=utf-8" });
+                response.end(`Hello '${name}'`);
+            });
+            break;
 
         /* 
               ----------------------
               If no route is matched 
               ---------------------- 
             */
+
+
+
         default:
             response.writeHead(501, { "Content-Type": "text/plain" });
             response.write("Error 501: Not implemented");

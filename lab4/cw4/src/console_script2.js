@@ -4,6 +4,10 @@ const { exec } = require('node:child_process');
 
 const COUNTER_FILE = 'counter.txt';
 
+/** 
+ * This function checks if COUNTER_FILE exists. If it does, it increments the number in the file by 1 and logs it.
+ * All file operations are performed using synchronous methods.
+ */
 function syncMode() {
     let count = 0;
 
@@ -20,6 +24,10 @@ function syncMode() {
     }
 }
 
+/**
+ * Asynchronously reads the COUNTER_FILE, increments the stored number by 1,
+ * writes the updated value back to the file, and logs it to the console.
+ */
 function asyncMode() {
     fs.readFile(COUNTER_FILE, 'utf-8', (err, data) => {
         let count = 0;
@@ -38,6 +46,9 @@ function asyncMode() {
     });
 }
 
+/**
+ * Executes shell commands entered by the user.
+ */
 function commandMode() {
     console.log("Wpisuj komendy — Ctrl+C kończy program");
 

@@ -17,6 +17,8 @@ function getGuestbookEntries() {
         return [];
     }
 }
+var x = 1
+console.log(x)
 
 function saveGuestbookEntries(entries) {
     fs.writeFileSync(guestbookFilePath, JSON.stringify(entries, null, 2), 'utf-8');

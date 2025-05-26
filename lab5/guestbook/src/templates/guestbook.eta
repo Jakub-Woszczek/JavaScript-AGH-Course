@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= it.title %></title>
+</head>
+<body>
+  <main>
+    <h1><%= it.title %></h1>
+
+    <form method="POST" action="/">
+      <label for="name">Twoje imię i nazwisko:</label><br>
+      <input type="text" id="name" name="name" required><br><br>
+
+      <label for="content">Twoja opinia:</label><br>
+      <textarea id="content" name="content" rows="4" cols="50" required></textarea><br><br>
+
+      <input type="submit" value="Dodaj wpis">
+    </form>
+
+    <hr>
+
+    <h2>Poprzednie wpisy:</h2>
+    <% if (it.entries && it.entries.length > 0) { %>
+      <ul>
+        <% it.entries.forEach(function(entry) { %>
+          <li><strong><%= entry.name %></strong><br><%= entry.content %></li>
+        <% }); %>
+      </ul>
+    <% } else { %>
+      <p>Brak wpisów.</p>
+    <% } %>
+  </main>
+</body>
+</html>

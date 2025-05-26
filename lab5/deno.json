@@ -1,9 +1,12 @@
 {
   "tasks": {
     "dev": "deno run --watch main.ts",
-    "dev2": "deno run --check --allow-net --watch app1.ts"
+    "dev2": "deno run --check --allow-net --watch app1.ts",
+    "guestbook": "deno run --check --allow-net --allow-read --allow-write guestbook/src/server.ts"
   },
-  "imports": {
+  "imports": 
+  {  "@oak/oak": "jsr:@oak/oak",
+    "eta": "jsr:@eta/eta@^3.1.0",
     "@std/assert": "jsr:@std/assert@1"
   }
 }

@@ -2,7 +2,9 @@
   "tasks": {
     "dev": "deno run --watch main.ts",
     "dev2": "deno run --check --allow-net --watch app1.ts",
-    "guestbook": "deno run --check --allow-net --allow-read --allow-write guestbook/src/server.ts"
+    "guestbook": "deno run --check --allow-net --allow-read --allow-write guestbook/src/server.ts",
+    "mongoDB": "deno run --check --allow-net --allow-read --allow-write --allow-sys --allow-env mongoDB/app3.ts"
+
   },
   "imports": 
   {  "@oak/oak": "jsr:@oak/oak",

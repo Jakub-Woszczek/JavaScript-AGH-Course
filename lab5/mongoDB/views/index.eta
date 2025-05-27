@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title><%= it.title %></title>
+</head>
+<body>
+  <h1><%= it.title %></h1>
+  <table border="1">
+    <tr>
+      <th>Imię</th>
+      <th>Nazwisko</th>
+      <th>Wydział</th>
+    </tr>
+    <% for (let entry of it.entries) { %>
+      <tr>
+        <td><%= entry.firstName %></td>
+        <td><%= entry.lastName %></td>
+        <td><%= entry.faculty %></td>
+      </tr>
+    <% } %>
+  </table>
+</body>
+</html>

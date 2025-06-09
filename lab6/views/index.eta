@@ -145,87 +145,76 @@
                         accept = 'application/xml';
                         break;
                 }
-                //--------------------------------------------------------------------------
-                // Configuration and execution of the (asynchronous) query to the web server
-                //--------------------------------------------------------------------------
-                ((http_method) => {
-                    if(http_method === 'GET') {
-                        const nameValue = encodeURIComponent(document.getElementById('name_GET').value);
-                        return fetch(`http://localhost:8000/submit?name=${nameValue}`, { // TO BE MODIFIED
-                            method: 'GET',
-                            credentials: "include", // DO NOT MODIFY OR REMOVE
-                            headers: {
-                                //****************************************************************************************
-                                // What is the acceptable data type—the server part should return data of the given type
-                                //****************************************************************************************
-                                Accept: accept
-                            }
-                        });
-                    }
-                    if(http_method === 'POST') {
-                        const nameValue = encodeURIComponent(document.getElementById('name_POST').value);
-                        const formData = new URLSearchParams();
-                        formData.append('name', nameValue);
 
-                        return fetch('http://localhost:8000/submit', {
-                            method: 'POST',
-                            credentials: "include", // // DO NOT MODIFY OR REMOVE
-                            // TO BE ADDED — you need to determine the content of the body
-                            headers: {
-                                'Content-Type': 'application/x-www-form-urlencoded',
-                                'Accept': accept,
-                                // TO BE ADDED: you must specify the value of the 'Content-type' header — you must inform the server that the body content contains data of the "application/x-www-form-urlencoded" type
+                (async (http_method) => {
+                    try {
+                        let response;
+                        if(http_method === 'GET') {
+                            const nameValue = encodeURIComponent(document.getElementById('name_GET').value);
+                            response = await fetch(`http://localhost:8000/submit?name=${nameValue}`, {
+                                method: 'GET',
+                                credentials: "include",
+                                headers: {
+                                    Accept: accept
+                                }
+                            });
+                        }
+                        if(http_method === 'POST') {
+                            const nameValue = encodeURIComponent(document.getElementById('name_POST').value);
+                            const formData = new URLSearchParams();
+                            formData.append('name', nameValue);
 
-                                //****************************************************************************************
-                                // What is the acceptable data type—the server part should return data of the given type
-                                //****************************************************************************************
-                            },
-                            body: formData.toString()
-                        });
-                    }
+                            response = await fetch('http://localhost:8000/submit', {
+                                method: 'POST',
+                                credentials: "include",
+                                headers: {
+                                    'Content-Type': 'application/x-www-form-urlencoded',
+                                    'Accept': accept,
+                                },
+                                body: formData.toString()
+                            });
+                        }
 
-                })(http_method) // a promise is returned
-                    .then(function (response) {
                         if (!response.ok)
                             throw Error(response.statusText);
 
                         console.group('Fetch API');
                         console.log(`HTTP method ⟶\t\t${http_method}\nResponse type ⟶\t${response_type}\nInput data ⟶\t\t${name}`);
 
-                        let dataPromise;
+                        let data;
                         if (response_type === 'json') {
-                            dataPromise = response.json();
+                            data = await response.json();
                         } else {
-                            dataPromise = response.text();
+                            data = await response.text();
                         }
 
-                        return dataPromise.then(data => {
-                            console.log(data);
-                            console.groupEnd();
+                        console.log(data);
+                        console.groupEnd();
 
-                            if(show_alert) {
-                                let alertMsg = '';
-                                switch(response_type) {
-                                    case 'text':
-                                        alertMsg = data;
-                                        break;
-                                    case 'json':
-                                        alertMsg = JSON.stringify(data);
-                                        break;
-                                    case 'xml':
-                                        alertMsg = data; // tu data jest tekstem XML, więc wyświetlamy bez zmian
-                                        break;
-                                    default:
-                                        alertMsg = data;
-                                }
-                                window.alert(alertMsg);
-                            } else {
-                                results.set(`fetch ${http_method} ${response_type}`, Promise.resolve(data));
-                                dispatchEvent(received);
+                        if(show_alert) {
+                            let alertMsg = '';
+                            switch(response_type) {
+                                case 'text':
+                                    alertMsg = data;
+                                    break;
+                                case 'json':
+                                    alertMsg = JSON.stringify(data);
+                                    break;
+                                case 'xml':
+                                    alertMsg = data;
+                                    break;
+                                default:
+                                    alertMsg = data;
                             }
-                        });
-                    })
-
+                            window.alert(alertMsg);
+                        } else {
+                            results.set(`fetch ${http_method} ${response_type}`, Promise.resolve(data));
+                            dispatchEvent(received);
+                        }
+                    } catch (error) {
+                        window.alert('There was a problem with this request: ' + error.message);
+                    }
+                })(http_method);
             }
         </script>
         <script src="https://cdn.jsdelivr.net/npm/mocha/mocha.js"> </script>
